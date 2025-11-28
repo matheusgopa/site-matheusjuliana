@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Matheus & Juliana</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <!-- Fontes românticas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="loading-screen">
+  <div class="loader-heart"></div>
+  <p class="loader-text">Carregando nosso amor...</p>
+</div>
+
+    <!-- Tentativa de tocar música automaticamente -->
+    <audio id="bg-music" src="music/here-with-me.mp3" loop></audio>
+
+    <!-- Overlay caso o navegador bloqueie o autoplay -->
+    <div id="sound-overlay" class="sound-overlay hidden">
+      <div class="sound-card">
+        <h2>💗 Quer ouvir nossa música?</h2>
+        <p>Clique em <strong>“Tocar música”</strong> para entrar no nosso mundo.</p>
+        <button id="btn-play-music" class="btn-primary">Tocar música</button>
+      </div>
+    </div>
+
+    <header class="hero" id="topo">
+      <div class="hero-overlay"></div>
+      <nav class="navbar">
+        <div class="logo">Matheus &amp; Juliana</div>
+        <ul class="nav-links">
+          <li><a href="#carta">Carta</a></li>
+          <li><a href="#timeline">Nossa história</a></li>
+          <li><a href="#fotos">Fotos</a></li>
+          <li><a href="#quiz">Quiz</a></li>
+        </ul>
+      </nav>
+
+      <div class="hero-content">
+        <p class="hero-subtitle">Desde 02 de setembro de 2023</p>
+        <h1 class="hero-title">Nossa História de Amor</h1>
+        <p class="hero-text">
+          Um cantinho só nosso, para guardar cada sorriso, cada foto e cada promessa que Deus já
+          escreveu para nós.
+        </p>
+        <div class="hero-buttons">
+          <a href="#carta" class="btn-primary">Ler a carta</a>
+          <a href="#timeline" class="btn-secondary">Ver a linha do tempo</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Seção da Carta -->
+      <section id="carta" class="section section-soft reveal">
+  <div class="section-header">
+    <h2 class="section-title">Uma carta para você 💌</h2>
+  </div>
+
+  <div class="letter-container">
+  <div class="letter-fold" id="letter-fold">
+    <p>Clique para abrir 💗</p>
+  </div>
+
+  <div class="letter-open" id="letter-open">
+
+    <div class="letter-body-beautiful">
+
+      <p><strong>Vioquita,</strong></p>
+
+      <div class="fancy-divider"></div>
+
+      <p>
+        Quando olho para tudo o que já vivemos, eu vejo o cuidado de Deus em cada detalhe.
+        Nada foi acaso — foi propósito. Foi Ele quem alinhou nossos passos, nossos dias,
+        nossas conversas e até nossos silêncios. 
+      </p>
+
+      <div class="fancy-divider"></div>
+
+      <p>
+        Desde que você chegou, meu coração encontrou paz. Eu agradeço a Deus por você —
+        pelo seu jeito leve, pelo seu sorriso, pela sua fé. Caminhar ao seu lado me mostra
+        que o amor de verdade é simples, puro e guiado por Ele.
+      </p>
+
+      <div class="fancy-divider"></div>
+
+      <p>
+        Oro para que o Senhor continue moldando a nossa história, e que o nosso relacionamento
+        seja sempre um reflexo do amor dEle: firme, constante e cheio de propósito.
+      </p>
+
+      <div class="fancy-divider"></div>
+
+      <p class="assinatura-beautiful">Matheus Sousa💞</p>
+    </div>
+
+    </div>
+  </div>
+</div>
+
+</section>
+
+<!-- tempo junto -->
+<section class="section reveal" id="tempo-juntos">
+  <div class="section-header">
+    <h2 class="section-title">Nosso Tempo Juntos ⏳❤️</h2>
+    <p class="section-subtitle">Contando cada momento desde que Deus uniu nossas vidas.</p>
+  </div>
+
+  <div class="timer-box">
+    <div id="timer-format-1"></div>
+    <div id="timer-format-2"></div>
+    <div id="timer-format-3"></div>
+  </div>
+</section>
+
+
+      <!-- Linha do tempo -->
+      <section id="timeline" class="section section-soft reveal">
+        <div class="section-header">
+          <h2 class="section-title">Nossa linha do tempo ⏳</h2>
+          <p class="section-subtitle">
+            Alguns marcos que Deus já escreveu na nossa história.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <h3>Primeiro encontro oficial</h3>
+              <p>
+                Aquela noite no shopping em que a ansiedade virou risada, o silêncio virou conversa boa e eu
+                tive certeza de que estava exatamente onde deveria estar: do seu lado.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <h3>02/09/2023 • Pedido de namoro</h3>
+              <p>
+                Aquele dia inesquecível em que eu respirei fundo, te olhei nos olhos para ouvir o seu “sim”.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <h3>Viagens & aventuras</h3>
+              <p>
+                Parques, água, trilhas,congressos… nossas fotos mostram:
+                quando estamos juntos, qualquer lugar vira lembrança favorita.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <h3>Hoje</h3>
+              <p>
+                Continuamos construindo nossa história, um dia de cada vez. Com fé, respeito,
+                compromisso e muito amor — e com a certeza de que o melhor ainda está por vir.
+                2 anos ao seu lado, cheio de muito amor e carinho.. Lovo u 💗
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Carrossel principal -->
+      <section id="fotos" class="section section-soft reveal">
+        <div class="section-header">
+          <h2 class="section-title">Nossos momentos favoritos 📸</h2>
+          <p class="section-subtitle">
+            Um carrossel com algumas fotos especiais.
+          </p>
+        </div>
+
+        <div class="carousel">
+          <div class="carousel-inner" id="carousel-inner">
+            <!-- Imagens são inseridas via JavaScript -->
+          </div>
+          <button class="carousel-btn prev" id="btn-prev">&#10094;</button>
+          <button class="carousel-btn next" id="btn-next">&#10095;</button>
+          <div class="carousel-dots" id="carousel-dots"></div>
+        </div>
+
+        <!-- Galeria em grid -->
+        <div class="gallery">
+  <div class="polaroid"><img src="images/20.jpg"><span>Eu & Você 💗</span></div>
+  <div class="polaroid"><img src="images/21.jpg"><span>Nosso momento</span></div>
+  <div class="polaroid"><img src="images/22.jpg"><span>Amor sem fim</span></div>
+  <div class="polaroid"><img src="images/5.jpg"><span>Com Deus no centro</span></div>
+  <div class="polaroid"><img src="images/25.jpg"><span>Risadas & carinho</span></div>
+  <div class="polaroid"><img src="images/33.jpg"><span>Meu presente</span></div>
+  <div class="polaroid"><img src="images/35.jpg"><span>Vidoca</span></div>
+  <div class="polaroid"><img src="images/28.jpg"><span>Meu amor</span></div>
+  <div class="polaroid"><img src="images/29.jpg"><span>Meu coração</span></div>
+  <div class="polaroid"><img src="images/41.jpg"><span>💗</span></div>
+</div>
+
+        
+      </section>
+
+      <!-- Quiz romântico -->
+      <section id="quiz" class="section section-soft reveal">
+        <div class="section-header">
+          <h2 class="section-title">Quiz do casal 💞</h2>
+          <p class="section-subtitle">
+            Um joguinho simples só para ver se você lembra de alguns detalhes da nossa história.
+          </p>
+        </div>
+
+        <div class="quiz-card">
+          <div class="quiz-question">
+            <p><strong>1.</strong> Em que dia eu te pedi em namoro? (Fácil)</p>
+            <div class="quiz-options">
+              <button data-correct="false">01/09/2023</button>
+              <button data-correct="true">02/09/2023</button>
+              <button data-correct="false">10/09/2023</button>
+            </div>
+          </div>
+
+          <div class="quiz-question">
+            <p><strong>2.</strong> Qual música é a “nossa música” neste site?</p>
+            <div class="quiz-options">
+              <button data-correct="true">Here With Me</button>
+              <button data-correct="false">Perfect</button>
+              <button data-correct="false">All Of Me</button>
+            </div>
+          </div>
+
+          <div class="quiz-question">
+            <p><strong>3.</strong> Quem tem mais fome?</p>
+            <div class="quiz-options">
+              <button data-correct="true">Você 😳</button>
+              <button data-correct="true">Você 😳</button>
+              <button data-correct="true">Você 😳</button>
+            </div>
+          </div>
+
+           <div class="quiz-question">
+            <p><strong>4.</strong> O que mais te encanta em nós dois? ?</p>
+            <div class="quiz-options">
+              <button data-correct="true">A leveza</button>
+              <button data-correct="true">A parceria</button>
+              <button data-correct="true">A fé que nos guia  </button>
+            </div>
+          </div>
+
+          <div class="quiz-question">
+            <p><strong>5.</strong> O nosso melhor passeio ?</p>
+            <div class="quiz-options">
+              <button data-correct="false">Passeio de barco na orla</button>
+              <button data-correct="false">Passeio de Cavalo</button>
+              <button data-correct="true">Leão de Judá</button>
+            </div>
+          </div>
+
+          <div class="quiz-question">
+            <p><strong>6.</strong> Quem sente mais saudade ?</p>
+            <div class="quiz-options">
+              <button data-correct="false">Eu</button>
+              <button data-correct="false">Você</button>
+              <button data-correct="true">Igual ❤️</button>
+            </div>
+          </div>
+
+          <div class="quiz-question">
+            <p><strong>7.</strong> Qual foi o momento mais marcante pra nós?</p>
+            <div class="quiz-options">
+              <button data-correct="true">Nosso pedido de namoro</button>
+              <button data-correct="false">Nosso primeiro encontro</button>
+              <button data-correct="false">Nossa primeira viagem</button>
+            </div>
+          </div>
+
+          <button id="btn-quiz" class="btn-primary">Ver resultado</button>
+          <p id="quiz-result" class="quiz-result"></p>
+        </div>
+      </section>
+
+
+<section id="capitulo-final" class="section section-soft reveal final-section">
+  <div class="final-wrapper">
+    
+    <h2 class="final-title">
+      Capítulo Final — Por enquanto 💗
+    </h2>
+
+    <p class="final-subtitle">
+      Porque nossa história ainda está sendo escrita…
+    </p>
+
+    <div class="final-text typewriter">
+
+  <p><strong>Amoreco,</strong></p>
+
+  <div class="divider"></div>
+
+  <p>
+    Se você chegou até aqui, quero que saiba disso:
+    <strong>você é a melhor parte da minha vida.</strong>
+    A cada foto, cada lembrança, cada detalhe deste site,
+    tudo aponta para uma verdade simples:
+    <strong>eu escolho você todos os dias.</strong>
+  </p>
+
+  <div class="divider"></div>
+
+  <p>
+    Que Deus continue guiando nossos passos,
+    nossos sonhos e nosso futuro.
+    O próximo capítulo?
+    <strong>Vamos escrever juntos. Te amo muito muitão 💗💗💗💗</strong>
+  </p>
+
+  <div class="divider"></div>
+
+  <p class="assinatura">Matheus 💞</p>
+</div>
+
+
+    <!-- Corações decorativos -->
+    <img src="images/heart-soft.png" class="heart-left">
+    <img src="images/heart-soft.png" class="heart-right">
+
+  </div>
+</section>
+
+
+    <footer class="footer">
+      <p>Feito com muito amor por Matheus para Juliana 💗</p>
+      <a href="#topo" class="back-to-top">Voltar ao topo ↑</a>
+    </footer>
+
+    <script src="script.js"></script>
+    <div id="secret-video">
+  <div class="video-box">
+    <iframe id="surpresa-video" width="360" height="215"
+      src="" frameborder="0" allowfullscreen></iframe>
+  </div>
+</div>
+<div id="music-now-playing">
+  🎶 Tocando agora: <strong>Here With Me</strong>
+</div>
+
+  </body>
+</html>
