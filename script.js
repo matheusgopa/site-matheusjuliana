@@ -185,56 +185,58 @@ document.getElementById("btn-quiz").addEventListener("click", () => {
 
 
 /************************************************
- *  MÚSICA (Autoplay + Fallback + Botão Flutuante)
+ *  MÚSICA — VERSÃO À PROVA DE ERROS
  ************************************************/
 const audio = document.getElementById("bg-music");
 const soundOverlay = document.getElementById("sound-overlay");
 const playButton = document.getElementById("btn-play-music");
 
-// Garantir que o áudio é carregado corretamente
-audio.addEventListener("loadeddata", () => {
-  audio.muted = false;
-});
+if (audio) {
 
-// Quando ela clicar para entrar no site, a música começa
-document.getElementById("love-modal-btn").addEventListener("click", async () => {
-  audio.volume = 0.5;
-  
-  try {
-    audio.load();         // <-- IMPORTANTE
-    await audio.play();   // <-- Agora conta como gesto real
-    soundOverlay.classList.add("hidden");
-  } catch (err) {
-    soundOverlay.classList.remove("hidden");
-  }
-});
+  // Evita erro caso o navegador bloqueie
+  audio.addEventListener("loadeddata", () => {
+    audio.muted = false;
+  });
 
-playButton.addEventListener("click", async () => {
-  try {
-    audio.load();         // <-- IMPORTANTE
-    await audio.play();
-    soundOverlay.classList.add("hidden");
-  } catch (err) {
-    alert("Não consegui iniciar a música. Tenta de novo 😊");
-  }
-});
+  document.getElementById("love-modal-btn").addEventListener("click", async () => {
+    try {
+      audio.volume = 0.5;
+      audio.load();     // apenas se o elemento existe
+      await audio.play();
+      soundOverlay.classList.add("hidden");
+    } catch (err) {
+      soundOverlay.classList.remove("hidden");
+    }
+  });
 
-// botão flutuante de play/pause
-const musicToggle = document.createElement("button");
-musicToggle.id = "music-toggle";
-musicToggle.className = "floating-btn";
-musicToggle.innerText = "🎵";
-document.body.appendChild(musicToggle);
+  playButton.addEventListener("click", async () => {
+    try {
+      audio.load();
+      await audio.play();
+      soundOverlay.classList.add("hidden");
+    } catch (err) {
+      alert("Não consegui iniciar a música. Tenta de novo 😊");
+    }
+  });
 
-musicToggle.addEventListener("click", () => {
-  if (audio.paused) {
-    audio.play();
-    musicToggle.innerText = "🎵";
-  } else {
-    audio.pause();
-    musicToggle.innerText = "⏸️";
-  }
-});
+  // botão flutuante
+  const musicToggle = document.createElement("button");
+  musicToggle.id = "music-toggle";
+  musicToggle.className = "floating-btn";
+  musicToggle.innerText = "🎵";
+  document.body.appendChild(musicToggle);
+
+  musicToggle.addEventListener("click", () => {
+    if (audio.paused) {
+      audio.play();
+      musicToggle.innerText = "🎵";
+    } else {
+      audio.pause();
+      musicToggle.innerText = "⏸️";
+    }
+  });
+
+}
 
 
 
@@ -487,5 +489,6 @@ audio.addEventListener("pause", () => {
 audio.addEventListener("ended", () => {
   nowPlaying.style.opacity = "0";
 });
+
 
 
