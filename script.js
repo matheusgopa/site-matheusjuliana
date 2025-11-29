@@ -1,12 +1,14 @@
-// LOADING SCREEN
+/* ============================================================
+    LOADING SCREEN
+============================================================ */
 window.addEventListener("load", () => {
   const loading = document.getElementById("loading-screen");
-  setTimeout(() => loading.classList.add("hide"), 2500);
+  if (loading) setTimeout(() => loading.classList.add("hide"), 1800);
 });
 
-/************************************************
- *  CARROSSEL (FADE + LEGENDA + SWIPE)
- ************************************************/
+/* ============================================================
+    CARROSSEL (Fade + Swipe + Dots)
+============================================================ */
 
 const photosCarousel = [
   { src: "images/49.png", caption: "Pedido de namoro 💍" },
@@ -29,47 +31,55 @@ let captionEl;
 let carouselTimer = null;
 
 function createSlides() {
-  photosCarousel.forEach((photo, index) => {
+  if (!carouselInner) return;
+
+  photosCarousel.forEach((photo, i) => {
     const slide = document.createElement("div");
-    slide.classList.add("carousel-slide");
+    slide.className = "carousel-slide";
     slide.style.backgroundImage = `url('${photo.src}')`;
-    if (index === 0) slide.classList.add("active");
+
+    if (i === 0) slide.classList.add("active");
+
     carouselInner.appendChild(slide);
     slides.push(slide);
 
     const dot = document.createElement("div");
-    dot.classList.add("carousel-dot");
-    if (index === 0) dot.classList.add("active");
+    dot.className = "carousel-dot";
+    if (i === 0) dot.classList.add("active");
+
     dot.addEventListener("click", () => {
-      goToSlide(index);
+      currentSlide = i;
+      updateSlide();
       restartCarouselTimer();
     });
+
     dotsContainer.appendChild(dot);
     dots.push(dot);
   });
 
-  // legenda
   captionEl = document.createElement("div");
-  captionEl.classList.add("carousel-caption", "show");
+  captionEl.className = "carousel-caption show";
   captionEl.innerText = photosCarousel[0].caption;
+
   carouselInner.insertAdjacentElement("afterend", captionEl);
 }
 
 function updateSlide() {
-  slides.forEach((s, i) => {
-    s.classList.toggle("active", i === currentSlide);
-  });
+  slides.forEach((s, idx) =>
+    s.classList.toggle("active", idx === currentSlide)
+  );
 
-  dots.forEach((d, i) => {
-    d.classList.toggle("active", i === currentSlide);
-  });
+  dots.forEach((d, idx) =>
+    d.classList.toggle("active", idx === currentSlide)
+  );
 
-  if (!captionEl) return;
-  captionEl.classList.remove("show");
-  setTimeout(() => {
-    captionEl.innerText = photosCarousel[currentSlide].caption;
-    captionEl.classList.add("show");
-  }, 250);
+  if (captionEl) {
+    captionEl.classList.remove("show");
+    setTimeout(() => {
+      captionEl.innerText = photosCarousel[currentSlide].caption;
+      captionEl.classList.add("show");
+    }, 200);
+  }
 }
 
 function nextSlide() {
@@ -82,173 +92,118 @@ function prevSlide() {
   updateSlide();
 }
 
-function goToSlide(i) {
-  currentSlide = i;
-  updateSlide();
-}
-
 function restartCarouselTimer() {
-  if (carouselTimer) clearInterval(carouselTimer);
-  carouselTimer = setInterval(nextSlide, 5000);
+  clearInterval(carouselTimer);
+  carouselTimer = setInterval(nextSlide, 6000);
 }
 
 createSlides();
 restartCarouselTimer();
 
-document.getElementById("btn-next").onclick = () => {
+document.getElementById("btn-next")?.addEventListener("click", () => {
   nextSlide();
   restartCarouselTimer();
-};
-document.getElementById("btn-prev").onclick = () => {
+});
+
+document.getElementById("btn-prev")?.addEventListener("click", () => {
   prevSlide();
   restartCarouselTimer();
-};
+});
 
-/************ SWIPE NO CARROSSEL (TOUCH + MOUSE) ************/
+/* ===== Swipe ===== */
 let startX = 0;
-let isSwiping = false;
+let swiping = false;
 
-function getClientX(e) {
-  if (e.touches && e.touches.length > 0) return e.touches[0].clientX;
-  return e.clientX;
-}
-
-carouselInner.addEventListener("touchstart", (e) => {
-  startX = getClientX(e);
-  isSwiping = true;
+carouselInner?.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+  swiping = true;
 });
 
-carouselInner.addEventListener("touchend", (e) => {
-  if (!isSwiping) return;
-  const endX = getClientX(e.changedTouches ? e.changedTouches[0] : e);
-  const diff = endX - startX;
-  const threshold = 40;
-  if (diff > threshold) {
-    prevSlide();
-  } else if (diff < -threshold) {
-    nextSlide();
-  }
+carouselInner?.addEventListener("touchend", e => {
+  if (!swiping) return;
+  const diff = e.changedTouches[0].clientX - startX;
+
+  if (diff > 40) prevSlide();
+  if (diff < -40) nextSlide();
+
   restartCarouselTimer();
-  isSwiping = false;
-});
-
-carouselInner.addEventListener("mousedown", (e) => {
-  startX = getClientX(e);
-  isSwiping = true;
-});
-
-window.addEventListener("mouseup", (e) => {
-  if (!isSwiping) return;
-  const endX = getClientX(e);
-  const diff = endX - startX;
-  const threshold = 60;
-  if (diff > threshold) {
-    prevSlide();
-  } else if (diff < -threshold) {
-    nextSlide();
-  }
-  restartCarouselTimer();
-  isSwiping = false;
+  swiping = false;
 });
 
 
-/************************************************
- *  QUIZ
- ************************************************/
-const quizButtons = document.querySelectorAll(".quiz-options button");
-
-quizButtons.forEach((btn) => {
+/* ============================================================
+    QUIZ
+============================================================ */
+document.querySelectorAll(".quiz-options button").forEach(btn => {
   btn.addEventListener("click", () => {
-    const group = btn.parentElement.querySelectorAll("button");
-    group.forEach((b) => b.classList.remove("selected"));
+    btn.parentElement.querySelectorAll("button").forEach(b => b.classList.remove("selected"));
     btn.classList.add("selected");
   });
 });
 
-document.getElementById("btn-quiz").addEventListener("click", () => {
-  const selected = document.querySelectorAll(".quiz-options button.selected");
-  let correct = 0;
-
-  selected.forEach((btn) => {
-    if (btn.dataset.correct === "true") correct++;
-  });
-
+document.getElementById("btn-quiz")?.addEventListener("click", () => {
+  let correct = document.querySelectorAll('button.selected[data-correct="true"]').length;
   const result = document.getElementById("quiz-result");
 
-  if (correct >= 6)
-    result.textContent = "PER-FEI-TO! Você lembra de tudo. 💘 Já podemos casar ?";
-  else if (correct <= 5)
-    result.textContent = "Quase perfeito! 😄 Falta pouco!";
-  else
-    result.textContent = "Hmm… bora criar mais memórias 😜";
+  result.textContent =
+    correct >= 6
+      ? "PER-FEI-TO! Você lembra de tudo 💘 Já podemos casar ?"
+      : "Quase perfeito! Falta pouco 😄";
 });
 
 
-/************************************************
- *  MÚSICA — VERSÃO À PROVA DE ERROS
- ************************************************/
+/* ============================================================
+    MÚSICA (compatível com iPhone e GitHub Pages)
+============================================================ */
+
 const audio = document.getElementById("bg-music");
 const soundOverlay = document.getElementById("sound-overlay");
 const playButton = document.getElementById("btn-play-music");
 
 if (audio) {
+  audio.muted = false;
 
-  // Evita erro caso o navegador bloqueie
-  audio.addEventListener("loadeddata", () => {
-    audio.muted = false;
-  });
-
-  document.getElementById("love-modal-btn").addEventListener("click", async () => {
+  const startMusic = async () => {
     try {
-      audio.volume = 0.5;
-      audio.load();     // apenas se o elemento existe
+      audio.volume = 0.6;
       await audio.play();
-      soundOverlay.classList.add("hidden");
-    } catch (err) {
-      soundOverlay.classList.remove("hidden");
+      soundOverlay?.classList.add("hidden");
+    } catch {
+      soundOverlay?.classList.remove("hidden");
     }
-  });
+  };
 
-  playButton.addEventListener("click", async () => {
-    try {
-      audio.load();
-      await audio.play();
-      soundOverlay.classList.add("hidden");
-    } catch (err) {
-      alert("Não consegui iniciar a música. Tenta de novo 😊");
-    }
-  });
+  document.getElementById("love-modal-btn")?.addEventListener("click", startMusic);
 
-  // botão flutuante
+  playButton?.addEventListener("click", startMusic);
+
+  /* botão flutuante */
   const musicToggle = document.createElement("button");
   musicToggle.id = "music-toggle";
   musicToggle.className = "floating-btn";
-  musicToggle.innerText = "🎵";
+  musicToggle.textContent = "🎵";
   document.body.appendChild(musicToggle);
 
   musicToggle.addEventListener("click", () => {
     if (audio.paused) {
       audio.play();
-      musicToggle.innerText = "🎵";
+      musicToggle.textContent = "🎵";
     } else {
       audio.pause();
-      musicToggle.innerText = "⏸️";
+      musicToggle.textContent = "⏸️";
     }
   });
-
 }
 
 
-
-/************************************************
- *  ANIMAÇÕES AO SCROLL
- ************************************************/
+/* ============================================================
+    SCROLL REVEAL
+============================================================ */
 const reveals = document.querySelectorAll(".reveal");
 
 function revealOnScroll() {
-  reveals.forEach((el) => {
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight - 80) {
+  reveals.forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight - 80) {
       el.classList.add("visible");
     }
   });
@@ -256,32 +211,31 @@ function revealOnScroll() {
 
 window.addEventListener("scroll", revealOnScroll);
 revealOnScroll();
-/***********************************************
- *   TEMPO JUNTOS — CONTADOR AO VIVO
- ***********************************************/
+
+
+/* ============================================================
+    CONTADOR — TEMPO JUNTOS
+============================================================ */
+
 function atualizarTempo() {
-  const inicio = new Date("2023-12-02T00:00:00"); // DATA DE VOCÊS
+  const inicio = new Date("2023-12-02T00:00:00");
   const agora = new Date();
 
-  let diff = agora - inicio;
+  const diff = agora - inicio;
 
-  // Totais
-  const diasTotais = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const horasTotais = Math.floor(diff / (1000 * 60 * 60));
-  const minutosTotais = Math.floor(diff / (1000 * 60));
+  const diasTotais = Math.floor(diff / 86400000);
+  const horasTotais = Math.floor(diff / 3600000);
+  const minutosTotais = Math.floor(diff / 60000);
   const segundosTotais = Math.floor(diff / 1000);
 
-  // Detalhado
   let anos = agora.getFullYear() - inicio.getFullYear();
   let meses = agora.getMonth() - inicio.getMonth();
   let dias = agora.getDate() - inicio.getDate();
 
   if (dias < 0) {
     meses--;
-    const ultDiaMes = new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
-    dias += ultDiaMes;
+    dias += new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
   }
-
   if (meses < 0) {
     anos--;
     meses += 12;
@@ -290,10 +244,9 @@ function atualizarTempo() {
   document.getElementById("timer-format-1").innerHTML =
     `<strong>${anos}</strong> anos, <strong>${meses}</strong> meses e <strong>${dias}</strong> dias`;
 
-  document.getElementById("timer-format-2").innerHTML =
-    `${diasTotais} dias juntos`;
+  document.getElementById("timer-format-2").textContent = `${diasTotais} dias juntos`;
 
-  document.getElementById("timer-format-3").innerHTML =
+  document.getElementById("timer-format-3").textContent =
     `${horasTotais} horas • ${minutosTotais} minutos • ${segundosTotais} segundos de nós dois ❤️`;
 }
 
@@ -301,57 +254,52 @@ setInterval(atualizarTempo, 1000);
 atualizarTempo();
 
 
-/************************************************
- *  NAVBAR FLUTUANTE
- ************************************************/
+/* ============================================================
+    NAVBAR SCROLL
+============================================================ */
 window.addEventListener("scroll", () => {
-  const navbar = document.querySelector(".navbar");
-  if (window.scrollY > 40) navbar.classList.add("scrolled");
-  else navbar.classList.remove("scrolled");
+  document.querySelector(".navbar")?.classList.toggle("scrolled", window.scrollY > 40);
 });
 
 
-/************************************************
- *  ZOOM NAS FOTOS DA GALERIA
- ************************************************/
+/* ============================================================
+    ZOOM NAS FOTOS
+============================================================ */
 const galleryImages = document.querySelectorAll(".gallery img");
 
 if (galleryImages.length) {
-  const zoomOverlay = document.createElement("div");
-  zoomOverlay.id = "zoom-overlay";
-  zoomOverlay.innerHTML = `
+  const overlay = document.createElement("div");
+  overlay.id = "zoom-overlay";
+  overlay.innerHTML = `
     <div class="zoom-content">
       <img />
       <span class="zoom-close">×</span>
     </div>
   `;
-  document.body.appendChild(zoomOverlay);
+  document.body.appendChild(overlay);
 
-  const zoomImg = zoomOverlay.querySelector("img");
-  const zoomClose = zoomOverlay.querySelector(".zoom-close");
+  const zoomImg = overlay.querySelector("img");
 
-  galleryImages.forEach((img) => {
+  overlay.querySelector(".zoom-close").addEventListener("click", () =>
+    overlay.classList.remove("show")
+  );
+
+  overlay.addEventListener("click", e => {
+    if (e.target === overlay) overlay.classList.remove("show");
+  });
+
+  galleryImages.forEach(img =>
     img.addEventListener("click", () => {
       zoomImg.src = img.src;
-      zoomOverlay.classList.add("show");
-    });
-  });
-
-  zoomClose.addEventListener("click", () => {
-    zoomOverlay.classList.remove("show");
-  });
-
-  zoomOverlay.addEventListener("click", (e) => {
-    if (e.target === zoomOverlay) {
-      zoomOverlay.classList.remove("show");
-    }
-  });
+      overlay.classList.add("show");
+    })
+  );
 }
 
 
-/************************************************
- *  POP-UP SURPRESA INICIAL
- ************************************************/
+/* ============================================================
+    POP-UP INICIAL
+============================================================ */
 const loveModal = document.createElement("div");
 loveModal.id = "love-modal";
 loveModal.innerHTML = `
@@ -366,47 +314,39 @@ loveModal.innerHTML = `
 `;
 document.body.appendChild(loveModal);
 
-document.getElementById("love-modal-btn").addEventListener("click", () => {
-  loveModal.classList.add("hidden");
-});
+document.getElementById("love-modal-btn").addEventListener("click", () =>
+  loveModal.classList.add("hidden")
+);
 
 
-/************************************************
- *  RODAPÉ COM TEXTO DIGITADO
- ************************************************/
-const footerTextEl = document.querySelector(".footer p");
-if (footerTextEl) {
-  const fullText = footerTextEl.textContent.trim();
-  footerTextEl.textContent = "";
-  let idx = 0;
+/* ============================================================
+    RODAPÉ — TEXTO DIGITADO
+============================================================ */
+const footerEl = document.querySelector(".footer p");
+if (footerEl) {
+  const txt = footerEl.textContent.trim();
+  footerEl.textContent = "";
+  let i = 0;
 
-  function typeFooter() {
-    if (idx <= fullText.length) {
-      footerTextEl.textContent = fullText.slice(0, idx);
-      idx++;
-      setTimeout(typeFooter, 60);
-    }
+  function type() {
+    footerEl.textContent = txt.slice(0, i++);
+    if (i <= txt.length) setTimeout(type, 50);
   }
-
-  setTimeout(typeFooter, 800);
+  setTimeout(type, 800);
 }
 
 
-/************************************************
- *  MODO ESCURO (DARK MODE) COM CORAÇÃO
- ************************************************/
+/* ============================================================
+    DARK MODE
+============================================================ */
 const themeToggle = document.createElement("button");
 themeToggle.id = "theme-toggle";
 themeToggle.className = "floating-btn theme";
-themeToggle.innerText = "💖";
+themeToggle.textContent = "💖";
 document.body.appendChild(themeToggle);
 
 function applyTheme(theme) {
-  if (theme === "dark") {
-    document.body.classList.add("dark-theme");
-  } else {
-    document.body.classList.remove("dark-theme");
-  }
+  document.body.classList.toggle("dark-theme", theme === "dark");
 }
 
 let savedTheme = localStorage.getItem("loveTheme") || "light";
@@ -419,76 +359,60 @@ themeToggle.addEventListener("click", () => {
 });
 
 
-/************************************************
- *  CORAÇÕES FLUTUANDO NO FUNDO
- ************************************************/
+/* ============================================================
+    CORAÇÕES FLUTUANTES
+============================================================ */
 const heartsContainer = document.createElement("div");
 heartsContainer.id = "hearts-container";
 document.body.appendChild(heartsContainer);
 
-function createHeart() {
+setInterval(() => {
   const heart = document.createElement("span");
-  heart.classList.add("heart");
+  heart.className = "heart";
   heart.textContent = "❤";
   heart.style.left = Math.random() * 100 + "%";
   heart.style.animationDuration = 3 + Math.random() * 3 + "s";
   heartsContainer.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
+}, 1500);
 
-  setTimeout(() => {
-    heart.remove();
-  }, 6000);
-}
 
-setInterval(createHeart, 1500);
+/* ============================================================
+    CARTA — ANIMAÇÃO
+============================================================ */
+(() => {
+  const fold = document.getElementById("letter-fold");
+  const open = document.getElementById("letter-open");
 
-/************************************************
- *  CARTA ABRINDO — 
- ************************************************/
+  if (!fold || !open) return;
 
-(function () {
-  const letterFold = document.getElementById("letter-fold");
-  const letterOpen = document.getElementById("letter-open");
-
-  if (!letterFold || !letterOpen) return;
-
-  letterFold.addEventListener("click", () => {
-    // animação sumindo
-    letterFold.style.opacity = "0";
-    letterFold.style.transform = "scale(0.95)";
-    
+  fold.addEventListener("click", () => {
+    fold.style.opacity = 0;
+    fold.style.transform = "scale(0.95)";
     setTimeout(() => {
-      letterFold.style.display = "none";
-      letterOpen.classList.add("show");
+      fold.style.display = "none";
+      open.classList.add("show");
     }, 350);
   });
 })();
 
 
-// =============================
-// POLAROID: ângulos aleatórios
-// =============================
-const polas = document.querySelectorAll(".polaroid");
-
-polas.forEach((pola) => {
-  const angle = (Math.random() * 10 - 5).toFixed(1); // entre -5° e 5°
-  pola.style.transform = `rotate(${angle}deg)`;
+/* ============================================================
+    POLAROIDS — Ângulos Aleatórios
+============================================================ */
+document.querySelectorAll(".polaroid").forEach(p => {
+  const angle = (Math.random() * 10 - 5).toFixed(1);
+  p.style.transform = `rotate(${angle}deg)`;
 });
-// =============================
-// TOCANDO AGORA
-// =============================
+
+
+/* ============================================================
+    NOW PLAYING (opcional)
+============================================================ */
 const nowPlaying = document.getElementById("music-now-playing");
 
-audio.addEventListener("play", () => {
-  nowPlaying.style.opacity = "1";
-});
-
-audio.addEventListener("pause", () => {
-  nowPlaying.style.opacity = "0";
-});
-
-audio.addEventListener("ended", () => {
-  nowPlaying.style.opacity = "0";
-});
-
-
-
+if (nowPlaying && audio) {
+  audio.addEventListener("play", () => nowPlaying.style.opacity = "1");
+  audio.addEventListener("pause", () => nowPlaying.style.opacity = "0");
+  audio.addEventListener("ended", () => nowPlaying.style.opacity = "0");
+}
