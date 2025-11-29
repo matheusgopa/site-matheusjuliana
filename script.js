@@ -191,17 +191,27 @@ const audio = document.getElementById("bg-music");
 const soundOverlay = document.getElementById("sound-overlay");
 const playButton = document.getElementById("btn-play-music");
 
+// Garantir que o áudio é carregado corretamente
+audio.addEventListener("loadeddata", () => {
+  audio.muted = false;
+});
+
 // Quando ela clicar para entrar no site, a música começa
-document.getElementById("love-modal-btn").addEventListener("click", () => {
+document.getElementById("love-modal-btn").addEventListener("click", async () => {
   audio.volume = 0.5;
-  audio.play().catch(() => {
-    // Se ainda assim o navegador bloquear, mostra o botão de ativar música
+  
+  try {
+    audio.load();         // <-- IMPORTANTE
+    await audio.play();   // <-- Agora conta como gesto real
+    soundOverlay.classList.add("hidden");
+  } catch (err) {
     soundOverlay.classList.remove("hidden");
-  });
+  }
 });
 
 playButton.addEventListener("click", async () => {
   try {
+    audio.load();         // <-- IMPORTANTE
     await audio.play();
     soundOverlay.classList.add("hidden");
   } catch (err) {
@@ -225,6 +235,7 @@ musicToggle.addEventListener("click", () => {
     musicToggle.innerText = "⏸️";
   }
 });
+
 
 
 /************************************************
@@ -476,4 +487,5 @@ audio.addEventListener("pause", () => {
 audio.addEventListener("ended", () => {
   nowPlaying.style.opacity = "0";
 });
+
 
